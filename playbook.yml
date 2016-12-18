@@ -1,0 +1,50 @@
+- hosts: all
+  become: yes
+  vars:
+    user: ubuntu
+  tasks:
+    - name: Install packages
+      apt: name={{item}} state=present
+      with_items:
+        - zsh
+        - screen
+        - emacs-nox
+        - silversearcher-ag
+        - mysql-server
+        - redis-server
+        - elasticsearch
+        - imagemagick
+        - ruby
+        - ruby-dev
+        - nodejs
+        - npm
+        - phantomjs
+        - python-pip
+        - libxml2-dev
+        - libmagick++-dev
+        - libmysql++-dev
+        - libpq-dev
+
+    - name: Start services
+      action: service name={{item}} state=started enabled=yes
+      with_items:
+        - mysql
+        - redis
+        - elasticsearch
+
+    - name: Install awscli
+      command: pip install awscli
+
+    - name: Install bundler
+      command: gem install bundler
+
+    - name: Execute chsh zsh
+      command: chsh ubuntu -s /bin/zsh
+
+    - name: Execute git clone dotfiles
+      become_user: '{{user}}'
+      git: repo=https://github.com/f96q/dotfiles.git dest=/home/{{user}}/dotfiles accept_hostkey=yes
+
+    - name: Setup dotfiles
+      become_user: '{{user}}'
+      command: bash setup.sh chdir=/home/{{user}}/dotfiles
