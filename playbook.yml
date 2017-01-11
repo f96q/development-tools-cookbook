@@ -3,6 +3,9 @@
   vars:
     user: ubuntu
   tasks:
+    - name: Set timezone
+      timezone: name=Asia/Tokyo
+
     - name: Install packages
       apt: name={{item}} state=present
       with_items:
