@@ -9,6 +9,7 @@
     - name: Install packages
       apt: name={{item}} state=present
       with_items:
+        - language-pack-ja
         - zsh
         - screen
         - emacs-nox
