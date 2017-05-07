@@ -21,6 +21,7 @@
         - ruby
         - ruby-dev
         - nodejs
+        - nodejs-legacy
         - phantomjs
         - python-pip
         - libxml2-dev
