@@ -53,10 +53,10 @@
         - docker
 
     - name: Install awscli
-      command: pip install awscli
+      pip: name=awscli state=present
 
     - name: Install bundler
-      command: gem install bundler
+      gem: name=bundler user_install=no state=present
 
     - name: Install yarn
       npm: name=yarn global=yes state=present
