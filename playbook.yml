@@ -28,6 +28,7 @@
         - ruby-dev
         - nodejs
         - nodejs-legacy
+        - npm
         - phantomjs
         - python-pip
         - libxml2-dev
@@ -56,6 +57,9 @@
 
     - name: Install bundler
       command: gem install bundler
+
+    - name: Install yarn
+      npm: name=yarn global=yes state=present
 
     - name: Execute chsh zsh
       command: chsh ubuntu -s /bin/zsh
