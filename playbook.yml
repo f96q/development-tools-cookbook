@@ -12,6 +12,12 @@
     - name: Add docker repo
       apt_repository: repo='deb [arch=amd64] http://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable' state=present
 
+    - name: Add heroku key
+      apt_key: url=https://cli-assets.heroku.com/apt/release.key state=present
+
+    - name: Add heroku repo
+      apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
+
     - name: Install packages
       apt: name={{item}} state=present update_cache=yes
       with_items:
@@ -36,6 +42,7 @@
         - libmysql++-dev
         - libpq-dev
         - docker-ce
+        - heroku
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
