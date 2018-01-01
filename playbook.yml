@@ -68,6 +68,9 @@
     - name: Install yarn
       npm: name=yarn global=yes state=present
 
+    - name: Install docker-clean
+      npm: name=docker-clean global=yes state=present
+
     - name: Execute chsh zsh
       command: chsh ubuntu -s /bin/zsh
 
