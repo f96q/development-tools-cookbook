@@ -1,7 +1,7 @@
 - hosts: all
   become: yes
   vars:
-    user: ubuntu
+    user: vagrant
   tasks:
     - name: Set timezone
       timezone: name=Asia/Tokyo
@@ -81,7 +81,7 @@
       npm: name=docker-clean global=yes state=present
 
     - name: Execute chsh zsh
-      command: chsh ubuntu -s /bin/zsh
+      command: chsh {{user}} -s /bin/zsh
 
     - name: Execute git clone dotfiles
       become_user: '{{user}}'
