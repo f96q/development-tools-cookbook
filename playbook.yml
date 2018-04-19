@@ -18,6 +18,10 @@
     - name: Add heroku repo
       apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
 
+    - name: Add elixir repo
+      apt:
+        deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+
     - name: Install packages
       apt: name={{item}} state=present update_cache=yes
       with_items:
@@ -42,6 +46,7 @@
         - libpq-dev
         - docker-ce
         - heroku
+        - elixir
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
