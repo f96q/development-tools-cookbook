@@ -22,6 +22,12 @@
       apt:
         deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
 
+    - name: Add node key
+      apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+
+    - name: Add node repo
+      apt_repository: repo='deb https://deb.nodesource.com/node_9.x {{ansible_distribution_release}} main' state=present
+
     - name: Install packages
       apt: name={{item}} state=present update_cache=yes
       with_items:
@@ -37,7 +43,6 @@
         - ruby
         - ruby-dev
         - nodejs
-        - npm
         - phantomjs
         - python-pip
         - libxml2-dev
