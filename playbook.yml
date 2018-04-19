@@ -33,7 +33,6 @@
         - ruby
         - ruby-dev
         - nodejs
-        - nodejs-legacy
         - npm
         - phantomjs
         - python-pip
