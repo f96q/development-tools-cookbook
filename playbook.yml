@@ -52,6 +52,8 @@
         - docker-ce
         - heroku
         - elixir
+        - erlang-dev
+        - erlang-parsetools
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
