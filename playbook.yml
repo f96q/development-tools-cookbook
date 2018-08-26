@@ -58,6 +58,7 @@
         - erlang-parsetools
         - libssl-dev
         - libreadline-dev
+        - postgresql
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -73,6 +74,7 @@
         - redis
         - elasticsearch
         - docker
+        - postgresql
 
     - name: Install awscli
       pip: name=awscli state=present
@@ -107,3 +109,7 @@
 
     - name: Allow Empty mysql root password
       command: mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
+
+    - name: Create Role
+      become_user: postgres
+      command: psql -c 'create role {{user}} with LOGIN SUPERUSER CREATEDB CREATEROLE REPLICATION BYPASSRLS;'
