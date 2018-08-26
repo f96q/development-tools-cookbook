@@ -56,6 +56,8 @@
         - elixir
         - erlang-dev
         - erlang-parsetools
+        - libssl-dev
+        - libreadline-dev
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -83,6 +85,14 @@
 
     - name: Install docker-clean
       npm: name=docker-clean global=yes state=present
+
+    - name: Install rbenv
+      become_user: '{{user}}'
+      git: repo=https://github.com/rbenv/rbenv.git dest=/home/{{user}}/.rbenv accept_hostkey=yes
+
+    - name: Install ruby-build
+      become_user: '{{user}}'
+      git: repo=https://github.com/rbenv/ruby-build.git dest=/home/{{user}}/.rbenv/plugins/ruby-build accept_hostkey=yes
 
     - name: Execute chsh zsh
       command: chsh {{user}} -s /bin/zsh
