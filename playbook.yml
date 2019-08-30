@@ -18,47 +18,36 @@
     - name: Add heroku repo
       apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
 
-    - name: Add elixir repo
-      apt:
-        deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-
-    - name: Add node key
-      apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
-
     - name: Add node repo
-      apt_repository: repo='deb https://deb.nodesource.com/node_9.x {{ansible_distribution_release}} main' state=present
+      apt_repository: repo='deb https://deb.nodesource.com/node_12.x {{ansible_distribution_release}} main' state=present
 
     - name: Install packages
-      apt: name={{item}} state=present update_cache=yes
-      with_items:
-        - language-pack-ja
-        - ntp
-        - zsh
-        - screen
-        - emacs-nox
-        - silversearcher-ag
-        - mysql-server
-        - redis-server
-        - elasticsearch
-        - imagemagick
-        - ruby
-        - ruby-dev
-        - nodejs
-        - phantomjs
-        - python-pip
-        - libxml2-dev
-        - libmagick++-dev
-        - libmysql++-dev
-        - libpq-dev
-        - libcurl4-openssl-dev
-        - docker-ce
-        - heroku
-        - elixir
-        - erlang-dev
-        - erlang-parsetools
-        - libssl-dev
-        - libreadline-dev
-        - postgresql
+      apt:
+        state: present
+        update_cache: yes
+        force_apt_get: true
+        name:
+          - language-pack-ja
+          - ntp
+          - zsh
+          - screen
+          - emacs-nox
+          - silversearcher-ag
+          - mysql-server
+          - postgresql
+          - redis-server
+          - imagemagick
+          - nodejs
+          - python-pip
+          - libxml2-dev
+          - libmagick++-dev
+          - libmysql++-dev
+          - libpq-dev
+          - libssl-dev
+          - libreadline-dev
+          - libcurl4-openssl-dev
+          - docker-ce
+          - heroku
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -71,16 +60,13 @@
       action: service name={{item}} state=started enabled=yes
       with_items:
         - mysql
+        - postgresql
         - redis
-        - elasticsearch
         - docker
         - postgresql
 
     - name: Install awscli
       pip: name=awscli state=present
-
-    - name: Install bundler
-      gem: name=bundler user_install=no state=present
 
     - name: Install yarn
       npm: name=yarn global=yes state=present
