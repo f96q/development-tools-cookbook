@@ -18,6 +18,9 @@
     - name: Add heroku repo
       apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
 
+    - name: Add node key
+      apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+
     - name: Add node repo
       apt_repository: repo='deb https://deb.nodesource.com/node_12.x {{ansible_distribution_release}} main' state=present
 
@@ -39,6 +42,7 @@
           - imagemagick
           - nodejs
           - python-pip
+          - python-psycopg2
           - libxml2-dev
           - libmagick++-dev
           - libmysql++-dev
@@ -93,9 +97,23 @@
       become_user: '{{user}}'
       command: bash setup.sh chdir=/home/{{user}}/dotfiles
 
+    - name: Install rbenv
+      become_user: '{{user}}'
+      git:
+        repo: https://github.com/sstephenson/rbenv.git
+        dest: /home/{{user}}/.rbenv
+
+    - name: Install ruby-build
+      become_user: '{{user}}'
+      git:
+        repo: https://github.com/sstephenson/ruby-build.git
+        dest: /home/{{user}}/.rbenv/plugins/ruby-build
+
     - name: Allow Empty mysql root password
       command: mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
 
-    - name: Create Role
+    - name: Create postgresql role
       become_user: postgres
-      command: psql -c 'create role {{user}} with LOGIN SUPERUSER CREATEDB CREATEROLE REPLICATION BYPASSRLS;'
+      postgresql_user:
+        name: vagrant
+        role_attr_flags: SUPERUSER,LOGIN
