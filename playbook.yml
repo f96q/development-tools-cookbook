@@ -98,18 +98,6 @@
       become_user: '{{user}}'
       command: bash setup.sh chdir=/home/{{user}}/dotfiles
 
-    - name: Install rbenv
-      become_user: '{{user}}'
-      git:
-        repo: https://github.com/sstephenson/rbenv.git
-        dest: /home/{{user}}/.rbenv
-
-    - name: Install ruby-build
-      become_user: '{{user}}'
-      git:
-        repo: https://github.com/sstephenson/ruby-build.git
-        dest: /home/{{user}}/.rbenv/plugins/ruby-build
-
     - name: Allow Empty mysql root password
       command: mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
 
