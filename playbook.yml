@@ -18,12 +18,6 @@
     - name: Add heroku repo
       apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
 
-    - name: Add node key
-      apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
-
-    - name: Add node repo
-      apt_repository: repo='deb https://deb.nodesource.com/node_12.x {{ansible_distribution_release}} main' state=present
-
     - name: Install packages
       apt:
         state: present
@@ -40,7 +34,6 @@
           - postgresql
           - redis-server
           - imagemagick
-          - nodejs
           - python-pip
           - python-psycopg2
           - libxml2-dev
@@ -85,6 +78,14 @@
     - name: Install ruby-build
       become_user: '{{user}}'
       git: repo=https://github.com/rbenv/ruby-build.git dest=/home/{{user}}/.rbenv/plugins/ruby-build accept_hostkey=yes
+
+    - name: Install nodenv
+      become_user: '{{user}}'
+      git: repo=https://github.com/nodenv/nodenv.git dest=/home/{{user}}/.nodenv accept_hostkey=yes
+
+    - name: Install node-build
+      become_user: '{{user}}'
+      git: repo=https://github.com/nodenv/node-build.git dest=/home/{{user}}/.nodenv/plugins/nodenv-build accept_hostkey=yes
 
     - name: Execute chsh zsh
       command: chsh {{user}} -s /bin/zsh
