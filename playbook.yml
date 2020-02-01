@@ -28,6 +28,7 @@
           - ntp
           - zsh
           - screen
+          - npm
           - emacs-nox
           - silversearcher-ag
           - mysql-server
