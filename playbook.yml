@@ -18,6 +18,12 @@
     - name: Add heroku repo
       apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
 
+    - name: Add cdh6 key
+      apt_key: url=https://archive.cloudera.com/cdh6/6.3.2/ubuntu1804/apt/archive.key
+
+    - name: Add cdh6 repo
+      apt_repository: repo='deb [arch=amd64] https://archive.cloudera.com/cdh6/6.3.2/ubuntu1804/apt bionic-cdh6.3.2 contrib' state=present
+
     - name: Install packages
       apt:
         state: present
@@ -46,6 +52,10 @@
           - libcurl4-openssl-dev
           - docker-ce
           - heroku
+          - hadoop-conf-pseudo
+          - hive
+          - hive-metastore
+          - hive-server2
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -53,6 +63,16 @@
     - name: Install docker-compose
       pip:
         name: docker-compose
+
+    - name: namenode directory check
+      stat:
+        path: /var/lib/hadoop-hdfs/cache/hdfs/dfs/name
+      register: namenode
+
+    - name: hdfs namenode -format
+      become_user: hdfs
+      command: hdfs namenode -format
+      when: namenode.stat.exists == false
 
     - name: Start services
       action: service name={{item}} state=started enabled=yes
@@ -62,6 +82,13 @@
         - redis
         - docker
         - postgresql
+        - hadoop-hdfs-namenode
+        - hadoop-hdfs-datanode
+        - hadoop-hdfs-secondarynamenode
+        - hadoop-yarn-resourcemanager
+        - hadoop-yarn-nodemanager
+        - hive-metastore
+        - hive-server2
 
     - name: Install awscli
       pip: name=awscli state=present
