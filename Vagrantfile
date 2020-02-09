@@ -7,5 +7,6 @@ Vagrant.configure('2') do |config|
   config.vm.provider 'virtualbox' do |vb|
     vb.memory = 8 * 1024
   end
+  config.disksize.size = '60GB'
   config.ssh.forward_agent = true
 end
