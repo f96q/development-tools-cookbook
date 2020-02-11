@@ -41,6 +41,7 @@
           - postgresql
           - redis-server
           - imagemagick
+          - net-tools
           - python-pip
           - python-psycopg2
           - libxml2-dev
