@@ -57,6 +57,7 @@
           - hive
           - hive-metastore
           - hive-server2
+          - libpostgresql-jdbc-java
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -74,6 +75,24 @@
       become_user: hdfs
       command: hdfs namenode -format
       when: namenode.stat.exists == false
+
+    - name: Create postgresql hive user
+      become_user: postgres
+      postgresql_user:
+        name: hive
+        password: password
+        role_attr_flags: SUPERUSER,LOGIN
+
+    - name: Create a new database with name metastore
+      become_user: postgres
+      postgresql_db:
+        name: metastore
+
+    - name: Copy hive-site.xml
+      copy: src=./hive-site.xml dest=/etc/hive/conf/hive-site.xml owner=root group=root mode=0644
+
+    - name: Create postgresql jdbc driver symbolic link
+      file: src=/usr/share/java/postgresql.jar dest=/usr/lib/hive/lib/postgresql.jar state=link
 
     - name: Start services
       action: service name={{item}} state=started enabled=yes
@@ -130,7 +149,7 @@
     - name: Allow Empty mysql root password
       command: mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
 
-    - name: Create postgresql role
+    - name: Create postgresql vagrant user
       become_user: postgres
       postgresql_user:
         name: vagrant
