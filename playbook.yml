@@ -94,6 +94,12 @@
     - name: Create postgresql jdbc driver symbolic link
       file: src=/usr/share/java/postgresql.jar dest=/usr/lib/hive/lib/postgresql.jar state=link
 
+    - name: Shell login hive user
+      user: name=hive groups=hive shell=/bin/bash append=yes
+
+    - name: Set authorized key for user vagrant copying it from user hive
+      authorized_key: user=hive key={{lookup('file', '/home/{{user}}/.ssh/authorized_keys')}} state=present
+
     - name: Start services
       action: service name={{item}} state=started enabled=yes
       with_items:
