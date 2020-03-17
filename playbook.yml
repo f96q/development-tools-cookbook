@@ -58,6 +58,7 @@
           - hive-metastore
           - hive-server2
           - libpostgresql-jdbc-java
+          - openjdk-8-jdk
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -140,6 +141,12 @@
     - name: Install node-build
       become_user: '{{user}}'
       git: repo=https://github.com/nodenv/node-build.git dest=/home/{{user}}/.nodenv/plugins/nodenv-build accept_hostkey=yes
+
+    - name: Install embulk
+      get_url:
+        url: https://dl.embulk.org/embulk-latest.jar
+        dest: /usr/local/bin/embulk
+        mode: 0755
 
     - name: Execute chsh zsh
       command: chsh {{user}} -s /bin/zsh
