@@ -12,12 +12,6 @@
     - name: Add docker repo
       apt_repository: repo='deb [arch=amd64] http://download.docker.com/linux/ubuntu disco stable' state=present
 
-    - name: Add heroku key
-      apt_key: url=https://cli-assets.heroku.com/apt/release.key state=present
-
-    - name: Add heroku repo
-      apt_repository: repo='deb http://cli-assets.heroku.com/branches/stable/apt ./' state=present
-
     - name: Install packages
       apt:
         state: present
@@ -46,7 +40,6 @@
           - libreadline-dev
           - libcurl4-openssl-dev
           - docker-ce
-          - heroku
           - openjdk-8-jdk
 
     - name: Add docker group
