@@ -59,7 +59,6 @@
         - postgresql
         - redis
         - docker
-        - postgresql
         - chrony
 
     - name: Install awscli
