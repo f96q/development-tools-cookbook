@@ -79,12 +79,6 @@
       become_user: '{{user}}'
       git: repo=https://github.com/nodenv/node-build.git dest=/home/{{user}}/.nodenv/plugins/nodenv-build accept_hostkey=yes
 
-    - name: Install embulk
-      get_url:
-        url: https://dl.embulk.org/embulk-latest.jar
-        dest: /usr/local/bin/embulk
-        mode: 0755
-
     - name: Install docker-clean
       get_url:
         url: https://raw.githubusercontent.com/ZZROTDesign/docker-clean/v2.0.4/docker-clean
@@ -95,6 +89,12 @@
       get_url:
         url: https://github.com/docker/compose/releases/download/1.26.0/docker-compose-{{ansible_system}}-{{ansible_architecture}}
         dest: /usr/local/bin/docker-compose
+        mode: 0755
+
+    - name: Install embulk
+      get_url:
+        url: https://dl.embulk.org/embulk-latest.jar
+        dest: /usr/local/bin/embulk
         mode: 0755
 
     - name: Execute chsh zsh
