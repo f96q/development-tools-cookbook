@@ -12,6 +12,12 @@
     - name: Add docker repo
       apt_repository: repo='deb [arch=amd64] http://download.docker.com/linux/ubuntu disco stable' state=present
 
+    - name: Add yarn key
+      apt_key: url=https://dl.yarnpkg.com/debian/pubkey.gpg state=present
+
+    - name: Add yarn repo
+      apt_repository: repo='deb https://dl.yarnpkg.com/debian/ stable main' state=present
+
     - name: Install packages
       apt:
         state: present
@@ -22,7 +28,7 @@
           - chrony
           - zsh
           - screen
-          - npm
+          - yarn
           - emacs-nox
           - silversearcher-ag
           - mysql-server
@@ -56,9 +62,6 @@
 
     - name: Install awscli
       pip: name=awscli state=present
-
-    - name: Install yarn
-      npm: name=yarn global=yes state=present
 
     - name: Install rbenv
       become_user: '{{user}}'
