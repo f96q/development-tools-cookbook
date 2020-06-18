@@ -25,14 +25,12 @@
         force_apt_get: true
         name:
           - language-pack-ja
-          - chrony
           - zsh
           - screen
-          - yarn
           - emacs-nox
           - silversearcher-ag
-          - postgresql
-          - redis-server
+          - yarn
+          - openjdk-8-jdk
           - imagemagick
           - net-tools
           - python-pip
@@ -43,8 +41,10 @@
           - libssl-dev
           - libreadline-dev
           - libcurl4-openssl-dev
+          - chrony
           - docker-ce
-          - openjdk-8-jdk
+          - postgresql
+          - redis-server
 
     - name: Add docker group
       user: name={{user}} append=yes groups=docker
@@ -52,10 +52,10 @@
     - name: Start services
       action: service name={{item}} state=started enabled=yes
       with_items:
+        - chrony
+        - docker
         - postgresql
         - redis
-        - docker
-        - chrony
 
     - name: Install awscli
       pip: name=awscli state=present
