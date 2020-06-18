@@ -31,7 +31,6 @@
           - yarn
           - emacs-nox
           - silversearcher-ag
-          - mysql-server
           - postgresql
           - redis-server
           - imagemagick
@@ -40,7 +39,6 @@
           - python-psycopg2
           - libxml2-dev
           - libmagick++-dev
-          - libmysql++-dev
           - libpq-dev
           - libssl-dev
           - libreadline-dev
@@ -54,7 +52,6 @@
     - name: Start services
       action: service name={{item}} state=started enabled=yes
       with_items:
-        - mysql
         - postgresql
         - redis
         - docker
@@ -107,9 +104,6 @@
     - name: Setup dotfiles
       become_user: '{{user}}'
       command: bash setup.sh chdir=/home/{{user}}/dotfiles
-
-    - name: Allow Empty mysql root password
-      command: mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
 
     - name: Create postgresql vagrant user
       become_user: postgres
