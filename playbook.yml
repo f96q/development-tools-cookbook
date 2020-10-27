@@ -76,6 +76,10 @@
       become_user: '{{user}}'
       git: repo=https://github.com/nodenv/node-build.git dest=/home/{{user}}/.nodenv/plugins/nodenv-build accept_hostkey=yes
 
+    - name: Install goenv
+      become_user: '{{user}}'
+      git: repo=https://github.com/syndbg/goenv.git dest=/home/{{user}}/.goenv accept_hostkey=yes
+
     - name: Install docker-clean
       get_url:
         url: https://raw.githubusercontent.com/ZZROTDesign/docker-clean/v2.0.4/docker-clean
