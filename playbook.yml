@@ -98,6 +98,12 @@
         dest: /usr/local/bin/embulk
         mode: 0755
 
+    - name: Install dbmate
+      get_url:
+        url: https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
+        dest: /usr/local/bin/dbmate
+        mode: 0755
+
     - name: Execute chsh zsh
       command: chsh {{user}} -s /bin/zsh
 
