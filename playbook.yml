@@ -33,6 +33,7 @@
           - openjdk-8-jdk
           - imagemagick
           - net-tools
+          - unzip
           - python3-pip
           - python3-psycopg2
           - libxml2-dev
@@ -103,6 +104,12 @@
         url: https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
         dest: /usr/local/bin/dbmate
         mode: 0755
+
+    - name: Install utern
+      ansible.builtin.unarchive:
+        src:  https://github.com/knqyf263/utern/releases/download/v0.1.5/utern_0.1.5_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
 
     - name: Execute chsh zsh
       command: chsh {{user}} -s /bin/zsh
